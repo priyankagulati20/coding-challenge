@@ -10,7 +10,10 @@ import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import io.bankbridge.constant.CommonConstants;
 import io.bankbridge.model.BankModel;
@@ -20,6 +23,12 @@ import spark.Response;
 class BanksCacheBasedTest {
 
     public static CacheManager cacheManager;
+
+    @Mock
+    private Request request;
+
+    @Mock
+    private Response response;
 
     @BeforeAll
     public static void setup() {
@@ -47,11 +56,14 @@ class BanksCacheBasedTest {
         cache.put("5678", bankModel2);
     }
 
+    @BeforeEach
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     void testHandle() {
         assertNotNull(cacheManager);
-        Request request = null;
-        Response response = null;
         String actual = BanksCacheBased.handle(request, response);
         String expected = "[{\"name\":\"Banco de espiritu santo\",\"id\":\"9870\"},{\"name\":\"Credit Sweets\",\"id\":\"5678\"}]";
         assertNotNull(actual, "Handle method should not return null string.");

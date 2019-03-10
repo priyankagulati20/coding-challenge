@@ -22,6 +22,12 @@ class BanksRemoteCallsTest {
     @Mock
     private static HttpClient httpClient;
 
+    @Mock
+    private Request request;
+
+    @Mock
+    private Response response;
+
     @BeforeEach
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -42,8 +48,6 @@ class BanksRemoteCallsTest {
 
         BanksRemoteCalls.setHttpClient(httpClient);
 
-        Request request = null;
-        Response response = null;
         String actual = BanksRemoteCalls.handle(request, response);
         String expected = "[{\"name\":\"Credit Sweets\",\"id\":\"5678\"}]";
         assertNotNull(actual, "Handle method should not return null string.");
